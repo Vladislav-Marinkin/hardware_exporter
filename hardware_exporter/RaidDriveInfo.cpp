@@ -1,5 +1,23 @@
 #include "RaidDriveInfo.h"
 
+std::string RaidDriveInfo::normalizeSpaces(const std::string& input)
+{
+    std::istringstream iss(input);
+    std::ostringstream oss;
+    std::string word;
+    bool first = true;
+
+    while (iss >> word) {
+        if (!first) {
+            oss << ' ';
+        }
+        oss << word;
+        first = false;
+    }
+
+    return oss.str();
+}
+
 std::string RaidDriveInfo::getBay() const {
     return bay;
 }
@@ -9,11 +27,11 @@ std::string RaidDriveInfo::getStatus() const {
 }
 
 std::string RaidDriveInfo::getSize() const {
-    return size;
+    return normalizeSpaces(size);
 }
 
 std::string RaidDriveInfo::getSerialNumber() const {
-    return serialNumber;
+    return normalizeSpaces(serialNumber);
 }
 
 std::string RaidDriveInfo::getWwid() const {
@@ -21,7 +39,7 @@ std::string RaidDriveInfo::getWwid() const {
 }
 
 std::string RaidDriveInfo::getModel() const {
-    return model;
+    return normalizeSpaces(model);
 }
 
 int RaidDriveInfo::getTemperature() const {

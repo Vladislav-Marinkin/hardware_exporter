@@ -4,6 +4,9 @@
 #define RAIDCONTROLLERINFO_H
 
 #include <string>
+#include <sstream>
+#include <algorithm>
+#include <cctype>
 
 class RaidControllerInfo
 {
@@ -11,6 +14,8 @@ private:
     std::string serialNumber;
     std::string controllerStatus;
     int controllerTemperatureC = 0;
+
+    static std::string normalizeSpaces(const std::string& input);
 
 public:
     RaidControllerInfo();

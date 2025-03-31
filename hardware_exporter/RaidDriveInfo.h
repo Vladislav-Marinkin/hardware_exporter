@@ -4,6 +4,9 @@
 #define RAIDDRIVEINFO_H
 
 #include <string>
+#include <sstream>
+#include <algorithm>
+#include <cctype>
 
 class RaidDriveInfo {
 private:
@@ -14,6 +17,8 @@ private:
     std::string wwid;
     std::string model;
     int temperature;
+
+    static std::string normalizeSpaces(const std::string& input);
 
 public:
     // Геттеры
