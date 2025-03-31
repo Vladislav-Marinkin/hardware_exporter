@@ -1,0 +1,59 @@
+{
+  "adaptec": {
+    "commands": [
+      "/opt/raidutils/arcconf getconfig 1"
+    ],
+    "regexs": {
+      "metrics": {
+        "raid_controller_status": {
+          "labels": {
+            "serial_number": "Controller Serial Number\\s*:\\s*(\\S+)",
+            "type": "adaptec"
+          },
+          "value": {
+            "regexs": "Controller Status\\s*:\\s*(\\S+)",
+            "true": [ "Online", "Optimal", "OK" ],
+            "false": []
+          },
+          "raid_controller_temperature": {
+            "labels": {
+              "serial_number": "Controller Serial Number\\s*:\\s*(\\S+)",
+              "type": "adaptec"
+            },
+            "value": {
+              "regexs": "Current Temperature\\s*:\\s*(\\d+)"
+            }
+          }
+        },
+        "raid_disks_status": {
+          "labels": {
+            "serial_number_drive": "Serial number\\s*:\\s*([\\w\\d]+)",
+            "drive_size": "Total Size\\s*:\\s*([\\d\\.]+\\s*\\w+)",
+            "wwid": "Attached SAS Address\\s*:\\s*([\\w\\d]+)",
+            "model": "Model\\s*:\\s*([^\n]+)",
+            "drive_slot": "Device\\s*#(\\d+)",
+            "type": "adaptec"
+          },
+          "value": {
+            "drive_status": "State\\s*:\\s*(\\w+)",
+            "true": [ "Online", "Optimal", "OK" ],
+            "false": []
+          }
+        },
+        "raid_disks_temperature": {
+          "labels": {
+            "serial_number_drive": "Serial number\\s*:\\s*([\\w\\d]+)",
+            "drive_size": "Total Size\\s*:\\s*([\\d\\.]+\\s*\\w+)",
+            "wwid": "Attached SAS Address\\s*:\\s*([\\w\\d]+)",
+            "model": "Model\\s*:\\s*([^\n]+)",
+            "drive_slot": "Device\\s*#(\\d+)",
+            "type": "adaptec"
+          },
+          "value": {
+            "temperature_drive": "Temperature\\s*:\\s*(\\d+)"
+          }
+        }
+      }
+    }
+  }
+}

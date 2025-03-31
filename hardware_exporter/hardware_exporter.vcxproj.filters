@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="RaidDriveInfo.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="RaidControllerInfo.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandExecutor.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ssacli.cpp">
+      <Filter>Parsers</Filter>
+    </ClCompile>
+    <ClCompile Include="lsi.cpp">
+      <Filter>Parsers</Filter>
+    </ClCompile>
+    <ClCompile Include="adaptec.cpp">
+      <Filter>Parsers</Filter>
+    </ClCompile>
+    <ClCompile Include="testData.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="ControllerParser.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ipmitool.cpp">
+      <Filter>Parsers</Filter>
+    </ClCompile>
+    <ClCompile Include="FanDriveInfo.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="HttpServer.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="controllerTypeParser.cpp">
+      <Filter>Parsers</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="RaidDriveInfo.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="RaidControllerInfo.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandExecutor.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ssacli.h">
+      <Filter>Parsers</Filter>
+    </ClInclude>
+    <ClInclude Include="lsi.h">
+      <Filter>Parsers</Filter>
+    </ClInclude>
+    <ClInclude Include="adaptec.h">
+      <Filter>Parsers</Filter>
+    </ClInclude>
+    <ClInclude Include="testData.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="ControllerParser.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ipmitool.h">
+      <Filter>Parsers</Filter>
+    </ClInclude>
+    <ClInclude Include="FanDriveInfo.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="HttpServer.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="controllerTypeParser.h">
+      <Filter>Parsers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Models">
+      <UniqueIdentifier>{3561ce13-5d50-473d-ae7d-0452298d5a0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{54505dcc-f119-46d7-841a-eb2f81a69abf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Parsers">
+      <UniqueIdentifier>{7c7fa14f-2613-444e-9178-13faf120ad97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{6f9bbce6-32c2-49c2-9333-6691de71a45d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="config.json">
+      <Filter>Data</Filter>
+    </None>
+  </ItemGroup>
+</Project>
