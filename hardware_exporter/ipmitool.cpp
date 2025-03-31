@@ -1,36 +1,39 @@
 #include "ipmitool.h"
 
-void ipmitool::parseFanDrive(const std::string input)
-{
-    // Регулярные выражения для каждого элемента
-    std::regex nameRegex(R"(System Fan\s*(\w+))");
-    std::regex statusRegex(R"(System Fan\s*\w+\s*\|\s*\w+\s*\|\s*(\w+))");
-    std::regex tempRegex(R"(System Fan\s*\w+\s*\|\s*\w+\s*\|\s*\w+\s*\|\s*([\d.]+))");
-    std::regex rpmRegex(R"(System Fan\s*\w+\s*\|\s*\w+\s*\|\s*\w+\s*\|\s*[\d.]+\s*\|\s*(\d+)\s*RPM)");
+void ipmitool::parseFanDrive(const std::string input) {
+    std::vector<std::string> lines;
+    std::istringstream stream(input);
+    std::string line;
 
-    std::smatch match;
-
-    // Разделяем ввод по разделителям
-    std::string::const_iterator searchStart(input.cbegin());
-    while (std::regex_search(searchStart, input.cend(), match, nameRegex)) {
-        FanDriveInfo currentFan;
-
-        currentFan.setName(match[1]);
-
-        if (std::regex_search(searchStart, input.cend(), match, statusRegex))
-            currentFan.setStatus(match[1]);
-
-        if (std::regex_search(searchStart, input.cend(), match, tempRegex))
-            currentFan.setTemperatureC(std::stof(match[1]));
-
-        if (std::regex_search(searchStart, input.cend(), match, rpmRegex))
-            currentFan.setRpm(match[1]);
-
-        fanDrivesInfo.push_back(currentFan);
-
-        searchStart = match.suffix().first;
+    while (std::getline(stream, line)) {
+        if (!line.empty()) {
+            lines.push_back(line);
+        }
     }
 
+    std::regex fanLineRegex(R"(^\s*(.+?)\s*\|\s*([\w\d]+)\s*\|\s*(\w+)\s*\|\s*([\d.]+)\s*\|\s*(\d+)?(?:\s*RPM)?)");
+
+    for (const std::string& line : lines) {
+        std::smatch match;
+        if (std::regex_match(line, match, fanLineRegex)) {
+            FanDriveInfo currentFan;
+            currentFan.setName(match[1]);
+
+            currentFan.setStatus(match[3]);
+
+            if (match[4].matched)
+                currentFan.setTemperatureC(std::stof(match[4]));
+
+            if (match[5].matched) {
+                currentFan.setRpm(match[5]);
+            }
+            else {
+                currentFan.setRpm("0");
+            }
+
+            fanDrivesInfo.push_back(currentFan);
+        }
+    }
 }
 
 void ipmitool::run()

@@ -1343,5 +1343,20 @@ System Fan 6A    | 3Ah | ok  | 29.11 | 11094 RPM
 System Fan 6B    | 3Bh | ok  | 29.12 | 10790 RPM
 PS1 Fan Fail     | A0h | ok  | 10.1 | 
 PS2 Fan Fail     | A4h | ok  | 10.2 |
+Fan1A            | 30h | ok  |  7.1 | 7680 RPM
+Fan2A            | 32h | ok  |  7.1 | 7800 RPM
+Fan3A            | 34h | ok  |  7.1 | 7800 RPM
+Fan4A            | 36h | ok  |  7.1 | 7560 RPM
+Fan5A            | 38h | ok  |  7.1 | 7080 RPM
+Fan6A            | 3Ah | ok  |  7.1 | 7080 RPM
+Fan Redundancy   | 75h | ok  |  7.1 | Fully Redundant
+Fan7A            | 3Ch | ok  |  7.1 | 7080 RPM
+Fan1B            | 31h | ok  |  7.1 | 7200 RPM
+Fan2B            | 33h | ok  |  7.1 | 7200 RPM
+Fan3B            | 35h | ok  |  7.1 | 7320 RPM
+Fan4B            | 37h | ok  |  7.1 | 7200 RPM
+Fan5B            | 39h | ok  |  7.1 | 6600 RPM
+Fan6B            | 3Bh | ok  |  7.1 | 6720 RPM
+Fan7B            | 3Dh | ok  |  7.1 | 6600 RPM
 )";
 }
