@@ -116,6 +116,9 @@
   <ItemGroup>
     <None Include="config.json" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
       <AdditionalDependencies>$(StlAdditionalDependencies);%(Link.AdditionalDependencies);%(AdditionalDependencies)</AdditionalDependencies>
