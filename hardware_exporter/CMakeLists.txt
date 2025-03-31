@@ -13,10 +13,10 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
-# Добавляем исходники
+# Путь к исходникам (относительно CMakeLists.txt)
 file(GLOB SRC_FILES
-    "hardware_exporter/*.cpp"
-    "hardware_exporter/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
 )
 
 # Создаём исполняемый файл
