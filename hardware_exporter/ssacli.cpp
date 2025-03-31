@@ -1,5 +1,7 @@
 #include "ssacli.h"
 
+#include <sstream>
+
 RaidControllerInfo ssacli::getControllerInfo() {
     return controllerInfo;
 }
@@ -28,45 +30,66 @@ void ssacli::parseControllerData(const std::string input) {
     }
 }
 
+std::vector<std::string> ssacli::splitDrives(const std::string& input)
+{
+    std::regex driveBlockRegex(R"(physicaldrive\s[^\n]+)");
+    std::sregex_token_iterator iter(input.begin(), input.end(), driveBlockRegex, { -1, 0 });
+    std::vector<std::string> blocks;
+
+    std::string currentBlock;
+    for (; iter != std::sregex_token_iterator(); ++iter) {
+        if (iter->str().find("physicaldrive") == 0) {
+            if (!currentBlock.empty()) {
+                blocks.push_back(currentBlock);
+                currentBlock.clear();
+            }
+        }
+        currentBlock += iter->str();
+    }
+    if (!currentBlock.empty()) {
+        blocks.push_back(currentBlock);
+    }
+
+    return blocks;
+}
+
 void ssacli::parseDriveData(const std::string input) {
-    // Регулярные выражения для каждого элемента
+    std::vector<std::string> blocks = splitDrives(input);
+
     std::regex bayRegex(R"(Bay:\s*(\d+))");
-    std::regex statusRegex(R"(Status:\s*(\w+))");
+    std::regex statusRegex(R"(Status:\s*([^\n\r]+))");
     std::regex sizeRegex(R"(Size:\s*([\d\.]+\s*\w+))");
     std::regex serialNumberRegex(R"(Serial Number:\s*([\w\d]+))");
     std::regex wwidRegex(R"(WWID:\s*([\w\d]+))");
     std::regex modelRegex(R"(Model:\s*([^\n]+))");
     std::regex tempRegex(R"(Current Temperature \(C\):\s*(\d+))");
 
-    std::smatch match;
-    RaidDriveInfo currentDrive;
+    for (const auto& block : blocks) {
+        std::smatch match;
+        RaidDriveInfo currentDrive;
 
-    // Разделяем ввод по разделителям
-    std::string::const_iterator searchStart(input.cbegin());
-    while (std::regex_search(searchStart, input.cend(), match, bayRegex)) {
-        currentDrive.setBay(match[1]);
+        if (std::regex_search(block, match, bayRegex))
+            currentDrive.setBay(match[1]);
 
-        if (std::regex_search(searchStart, input.cend(), match, statusRegex))
+        if (std::regex_search(block, match, statusRegex))
             currentDrive.setStatus(match[1]);
 
-        if (std::regex_search(searchStart, input.cend(), match, sizeRegex))
+        if (std::regex_search(block, match, sizeRegex))
             currentDrive.setSize(match[1]);
 
-        if (std::regex_search(searchStart, input.cend(), match, serialNumberRegex))
+        if (std::regex_search(block, match, serialNumberRegex))
             currentDrive.setSerialNumber(match[1]);
 
-        if (std::regex_search(searchStart, input.cend(), match, wwidRegex))
+        if (std::regex_search(block, match, wwidRegex))
             currentDrive.setWwid(match[1]);
 
-        if (std::regex_search(searchStart, input.cend(), match, modelRegex))
+        if (std::regex_search(block, match, modelRegex))
             currentDrive.setModel(match[1]);
 
-        if (std::regex_search(searchStart, input.cend(), match, tempRegex))
+        if (std::regex_search(block, match, tempRegex))
             currentDrive.setTemperature(std::stoi(match[1]));
 
         drivesInfo.push_back(currentDrive);
-
-        searchStart = match.suffix().first;
     }
 }
 

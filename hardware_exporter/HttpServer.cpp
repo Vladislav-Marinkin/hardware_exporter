@@ -157,7 +157,7 @@ std::string HttpServer::generateRaidMetrics(RaidControllerInfo controllerInfo, s
     metrics += "# TYPE drive_status gauge\n";
     for (const auto& drive : drivesInfo) {
         status_upper = to_uppercase(drive.getStatus());
-        int drive_status_value = (status_upper == "OK" || status_upper == "ONLINE" || status_upper == "GOOD") ? 1 : 0;
+        int drive_status_value = (status_upper == "OK" || status_upper == "ONLINE" || status_upper == "UNCONFIGURED(GOOD)") ? 1 : 0;
         metrics += "drive_status{bay=\"" + drive.getBay() + "\",serial=\"" + drive.getSerialNumber() + "\",wwid=\"" + drive.getWwid() + "\",model=\"" + drive.getModel() + "\",status=\"" + status_upper + "\"} " + std::to_string(drive_status_value) + "\n";
     }
 

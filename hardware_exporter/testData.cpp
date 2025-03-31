@@ -185,7 +185,7 @@ Smart Array P420i in Slot 0 (Embedded)
          Port: 1I
          Box: 1
          Bay: 4
-         Status: OK
+         Status: Not Available
          Drive Type: Data Drive
          Interface Type: SAS
          Size: 1.2 TB
@@ -212,7 +212,7 @@ Smart Array P420i in Slot 0 (Embedded)
          Port: 2I
          Box: 1
          Bay: 5
-         Status: OK
+         Status: Predictive Failure
          Drive Type: Data Drive
          Interface Type: SAS
          Size: 1.2 TB

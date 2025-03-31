@@ -20,6 +20,7 @@ private:
     std::vector<RaidDriveInfo> drivesInfo;
 
     void parseControllerData(const std::string input);
+    std::vector<std::string> splitDrives(const std::string& input);
     void parseDriveData(const std::string input);
 public:
     void run();
