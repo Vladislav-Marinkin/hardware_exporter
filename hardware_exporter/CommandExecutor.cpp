@@ -3,36 +3,27 @@
 std::string CommandExecutor::runCommand(const std::string& command)
 {
     std::array<char, 128> buffer;
-    std::string errorOutput;
     std::string result;
 
-    // Открываем поток для выполнения команды
-    FILE* pipe = popen(command.c_str(), "r");
+    // Объединяем stderr с stdout
+    std::string fullCommand = command + " 2>&1";
+
+    FILE* pipe = popen(fullCommand.c_str(), "r");
     if (!pipe) {
         throw std::runtime_error("Error executing the command");
     }
 
-    // Читаем вывод команды и добавляем его в результат
+    // Читаем объединённый вывод
     while (fgets(buffer.data(), buffer.size(), pipe) != nullptr) {
         result += buffer.data();
     }
 
-    // Читаем ошибки из stderr, если они есть
-    FILE* errorPipe = popen((command + " 2>&1").c_str(), "r");
-    if (errorPipe) {
-        while (fgets(buffer.data(), buffer.size(), errorPipe) != nullptr) {
-            errorOutput += buffer.data();
-        }
-        fclose(errorPipe);
-    }
+    int returnCode = pclose(pipe);
 
-    // Если в stderr есть ошибки, выбрасываем исключение
-    if (!errorOutput.empty()) {
-        throw std::runtime_error("Error executing the command: " + errorOutput);
+    // Проверка кода возврата (по желанию)
+    if (returnCode != 0) {
+        throw std::runtime_error("Command failed (code " + std::to_string(returnCode) + "): " + result);
     }
-
-    // Закрываем пайп
-    fclose(pipe);
 
     return result;
 }
