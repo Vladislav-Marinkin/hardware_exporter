@@ -31,7 +31,6 @@ void lsi::parseControllerData(const std::string input) {
 void lsi::parseDriveData(const std::string input) {
     // –егул€рные выражени€ дл€ каждого элемента
     std::regex bayRegex(R"(Slot Number:\s*(\d+))");
-    //std::regex statusRegex(R"(Firmware state:\s*([^\(,]+))");
     std::regex statusRegex(R"(Firmware state:\s*([^\n,]+))");
     std::regex sizeRegex(R"(Raw Size:\s*([\d\.]+\s*\w+))");
     std::regex serialNumberRegex(R"(WWN:\s*([\w\d]+))");
@@ -81,13 +80,13 @@ void lsi::run()
 
     try {
         controllerInfoOutput = runCommand("/opt/raidutils/MegaCli64 -LDInfo -Lall -aALL");
-        diskInfoOutput = runCommand("sudo /opt/raidutils/MegaCli64 -PDList -Aall");
+        diskInfoOutput = runCommand("/opt/raidutils/MegaCli64 -PDList -Aall");
     }
     catch (const std::runtime_error& e) {
         std::cerr << "Error executing the command, trying with sudo: " << e.what() << std::endl;
         try {
             controllerInfoOutput = runCommandWithSudo("/opt/raidutils/MegaCli64 -LDInfo -Lall -aALL");
-            diskInfoOutput = runCommandWithSudo("sudo /opt/raidutils/MegaCli64 -PDList -Aall");
+            diskInfoOutput = runCommandWithSudo("/opt/raidutils/MegaCli64 -PDList -Aall");
         }
         catch (const std::runtime_error& e) {
             std::cerr << "Error executing the command with sudo: " << e.what() << std::endl;

@@ -104,7 +104,7 @@ Smart Array P420i in Slot 0 (Embedded)
          Port: 1I
          Box: 1
          Bay: 1
-         Status: OK
+         Status: Not Available
          Drive Type: Data Drive
          Interface Type: SAS
          Size: 1.2 TB
@@ -158,7 +158,7 @@ Smart Array P420i in Slot 0 (Embedded)
          Port: 1I
          Box: 1
          Bay: 3
-         Status: OK
+         Status: Predictive Failure
          Drive Type: Data Drive
          Interface Type: SAS
          Size: 1.2 TB
@@ -185,7 +185,7 @@ Smart Array P420i in Slot 0 (Embedded)
          Port: 1I
          Box: 1
          Bay: 4
-         Status: Not Available
+         Status: OK
          Drive Type: Data Drive
          Interface Type: SAS
          Size: 1.2 TB
@@ -212,7 +212,7 @@ Smart Array P420i in Slot 0 (Embedded)
          Port: 2I
          Box: 1
          Bay: 5
-         Status: Predictive Failure
+         Status: OK
          Drive Type: Data Drive
          Interface Type: SAS
          Size: 1.2 TB
@@ -926,7 +926,7 @@ Physical Device information
 ----------------------------------------------------------------------
       Device #0
          Device is a Hard drive
-         State                              : Online
+         State                              : Offline
          Block Size                         : 512 Bytes
          Supported                          : Yes
          Programmed Max Speed               : SATA 6.0 Gb/s
@@ -1016,7 +1016,7 @@ Physical Device information
 
       Device #2
          Device is a Hard drive
-         State                              : Online
+         State                              : Offline
          Block Size                         : 512 Bytes
          Supported                          : Yes
          Programmed Max Speed               : SATA 6.0 Gb/s
@@ -1330,33 +1330,14 @@ std::string testData::getFanDriveData() const
     return R"(
 Fan Redundancy   | 0Ch | ok  | 30.1 | Fully Redundant
 System Fan 1A    | 30h | ok  | 29.1 | 11352 RPM
-System Fan 1B    | 31h | ok  | 29.2 | 10873 RPM
-System Fan 2A    | 32h | ok  | 29.3 | 11180 RPM
-System Fan 2B    | 33h | ok  | 29.4 | 10790 RPM
-System Fan 3A    | 34h | ok  | 29.5 | 10922 RPM
-System Fan 3B    | 35h | ok  | 29.6 | 10790 RPM
-System Fan 4A    | 36h | ok  | 29.7 | 11094 RPM
-System Fan 4B    | 37h | ok  | 29.8 | 10790 RPM
-System Fan 5A    | 38h | ok  | 29.9 | 11180 RPM
-System Fan 5B    | 39h | ok  | 29.10 | 10790 RPM
-System Fan 6A    | 3Ah | ok  | 29.11 | 11094 RPM
-System Fan 6B    | 3Bh | ok  | 29.12 | 10790 RPM
 PS1 Fan Fail     | A0h | ok  | 10.1 | 
-PS2 Fan Fail     | A4h | ok  | 10.2 |
 Fan1A            | 30h | ok  |  7.1 | 7680 RPM
-Fan2A            | 32h | ok  |  7.1 | 7800 RPM
-Fan3A            | 34h | ok  |  7.1 | 7800 RPM
-Fan4A            | 36h | ok  |  7.1 | 7560 RPM
-Fan5A            | 38h | ok  |  7.1 | 7080 RPM
-Fan6A            | 3Ah | ok  |  7.1 | 7080 RPM
 Fan Redundancy   | 75h | ok  |  7.1 | Fully Redundant
 Fan7A            | 3Ch | ok  |  7.1 | 7080 RPM
-Fan1B            | 31h | ok  |  7.1 | 7200 RPM
-Fan2B            | 33h | ok  |  7.1 | 7200 RPM
-Fan3B            | 35h | ok  |  7.1 | 7320 RPM
-Fan4B            | 37h | ok  |  7.1 | 7200 RPM
-Fan5B            | 39h | ok  |  7.1 | 6600 RPM
-Fan6B            | 3Bh | ok  |  7.1 | 6720 RPM
-Fan7B            | 3Dh | ok  |  7.1 | 6600 RPM
+Fan 1            | 28h | ok  | 29.1 | 51.74 percent, Transition to Running
+Fan 1 DutyCycle  | 29h | ok  | 29.1 | 51.74 percent
+Fan 1 Presence   | 2Ah | ok  | 29.1 | Device Present
+Fan Block 1      | 2Dh | ok  |  7.1 | 21.17 percent, Transition to Running
+Fan Block 2      | 2Eh | ok  |  7.2 | 21.17 percent, Transition to Running
 )";
 }

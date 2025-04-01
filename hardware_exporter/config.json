@@ -1,59 +1,208 @@
 {
-  "adaptec": {
-    "commands": [
-      "/opt/raidutils/arcconf getconfig 1"
-    ],
-    "regexs": {
-      "metrics": {
-        "raid_controller_status": {
-          "labels": {
-            "serial_number": "Controller Serial Number\\s*:\\s*(\\S+)",
-            "type": "adaptec"
-          },
-          "value": {
-            "regexs": "Controller Status\\s*:\\s*(\\S+)",
-            "true": [ "Online", "Optimal", "OK" ],
-            "false": []
+  "if_command": {
+    "command": "lspci | egrep 'RAID|SCSI' | egrep -i 'Hewlett-Packard|LSI|Adaptec' 2> /dev/null",
+    "utils": [
+      {
+        "name": "Adaptec",
+        "commands": [
+          "/opt/raidutils/arcconf getconfig 1"
+        ],
+        "metrics": {
+          "raid_controller_status": {
+            "help": "# HELP controller_temperature_c Controller temperature in Celsius\n",
+            "type": "# TYPE controller_temperature_c gauge\n",
+            "labels": {
+              "serial": "Controller Serial Number\\s*:\\s*(\\S+)",
+              "status": "Controller Status\\s*:\\s*(\\S+)",
+              "type": "adaptec"
+            },
+            "value": {
+              "regex": "Controller Status\\s*:\\s*(\\S+)",
+              "true": [ "Online", "Optimal", "OK" ],
+              "false": []
+            }
           },
           "raid_controller_temperature": {
+            "help": "# HELP controller_status Controller status (1 = OK, 0 = Not OK)\n",
+            "type": "# TYPE controller_status gauge\n",
             "labels": {
-              "serial_number": "Controller Serial Number\\s*:\\s*(\\S+)",
+              "serial": "Controller Serial Number\\s*:\\s*(\\S+)",
+              "status": "Controller Status\\s*:\\s*(\\S+)",
               "type": "adaptec"
             },
             "value": {
               "regexs": "Current Temperature\\s*:\\s*(\\d+)"
             }
-          }
-        },
-        "raid_disks_status": {
-          "labels": {
-            "serial_number_drive": "Serial number\\s*:\\s*([\\w\\d]+)",
-            "drive_size": "Total Size\\s*:\\s*([\\d\\.]+\\s*\\w+)",
-            "wwid": "Attached SAS Address\\s*:\\s*([\\w\\d]+)",
-            "model": "Model\\s*:\\s*([^\n]+)",
-            "drive_slot": "Device\\s*#(\\d+)",
-            "type": "adaptec"
           },
-          "value": {
-            "drive_status": "State\\s*:\\s*(\\w+)",
-            "true": [ "Online", "Optimal", "OK" ],
-            "false": []
-          }
-        },
-        "raid_disks_temperature": {
-          "labels": {
-            "serial_number_drive": "Serial number\\s*:\\s*([\\w\\d]+)",
-            "drive_size": "Total Size\\s*:\\s*([\\d\\.]+\\s*\\w+)",
-            "wwid": "Attached SAS Address\\s*:\\s*([\\w\\d]+)",
-            "model": "Model\\s*:\\s*([^\n]+)",
-            "drive_slot": "Device\\s*#(\\d+)",
-            "type": "adaptec"
+          "raid_disks_status": {
+            "help": "# HELP drive_status Drive status (1 = OK, 0 = Not OK)\n",
+            "type": "# TYPE drive_status gauge\n",
+            "labels": {
+              "serial": "Serial number\\s*:\\s*([\\w\\d]+)",
+              "drive_size": "Total Size\\s*:\\s*([\\d\\.]+\\s*\\w+)",
+              "wwid": "Attached SAS Address\\s*:\\s*([\\w\\d]+)",
+              "model": "Model\\s*:\\s*([^\n]+)",
+              "drive_slot": "Device\\s*#(\\d+)",
+              "type": "adaptec"
+            },
+            "value": {
+              "drive_status": "State\\s*:\\s*(\\w+)",
+              "true": [ "Online", "Optimal", "OK" ],
+              "false": []
+            }
           },
-          "value": {
-            "temperature_drive": "Temperature\\s*:\\s*(\\d+)"
+          "raid_disks_temperature": {
+            "help": "# HELP drive_temperature_c Drive temperature in Celsius\n",
+            "type": "# TYPE drive_temperature_c gauge\n",
+            "labels": {
+              "serial": "Serial number\\s*:\\s*([\\w\\d]+)",
+              "drive_size": "Total Size\\s*:\\s*([\\d\\.]+\\s*\\w+)",
+              "wwid": "Attached SAS Address\\s*:\\s*([\\w\\d]+)",
+              "model": "Model\\s*:\\s*([^\n]+)",
+              "drive_slot": "Device\\s*#(\\d+)",
+              "type": "adaptec"
+            },
+            "value": {
+              "temperature_drive": "Temperature\\s*:\\s*(\\d+)"
+            }
+          }
+        }
+      },
+      {
+        "name": "Hewlett-Packard",
+        "commands": [
+          "/opt/raidutils/ssacli ctrl all show detail",
+          "/opt/raidutils/ssacli ctrl slot=0 pd all show detail"
+        ],
+        "metrics": {
+          "raid_controller_status": {
+            "help": "# HELP controller_temperature_c Controller temperature in Celsius\n",
+            "type": "# TYPE controller_temperature_c gauge\n",
+            "labels": {
+              "serial": "Serial Number:\\s*(\\S+)",
+              "status": "State\\s*:\\s*(\\S+)",
+              "type": "adaptec"
+            },
+            "value": {
+              "regex": "State\\s*:\\s*(\\S+)",
+              "true": [ "Online", "Optimal", "OK" ],
+              "false": []
+            }
+          },
+          "raid_controller_temperature": {
+            "help": "# HELP controller_status Controller status (1 = OK, 0 = Not OK)\n",
+            "type": "# TYPE controller_status gauge\n",
+            "labels": {
+              "serial": "Serial Number:\\s*(\\S+)",
+              "status": "Controller Status\\s*:\\s*(\\S+)",
+              "type": "adaptec"
+            },
+            "value": {
+              "regexs": "Controller Temperature \\(C\\):\\s*(\\d+)"
+            }
+          },
+          "raid_disks_status": {
+            "help": "# HELP drive_status Drive status (1 = OK, 0 = Not OK)\n",
+            "type": "# TYPE drive_status gauge\n",
+            "labels": {
+              "serial": "Serial number\\s*:\\s*([\\w\\d]+)",
+              "drive_size": "Total Size\\s*:\\s*([\\d\\.]+\\s*\\w+)",
+              "wwid": "Attached SAS Address\\s*:\\s*([\\w\\d]+)",
+              "model": "Model\\s*:\\s*([^\n]+)",
+              "drive_slot": "Device\\s*#(\\d+)",
+              "type": "adaptec"
+            },
+            "value": {
+              "drive_status": "State\\s*:\\s*(\\w+)",
+              "true": [ "Online", "Optimal", "OK" ],
+              "false": []
+            }
+          },
+          "raid_disks_temperature": {
+            "help": "# HELP drive_temperature_c Drive temperature in Celsius\n",
+            "type": "# TYPE drive_temperature_c gauge\n",
+            "labels": {
+              "serial": "Serial number\\s*:\\s*([\\w\\d]+)",
+              "drive_size": "Total Size\\s*:\\s*([\\d\\.]+\\s*\\w+)",
+              "wwid": "Attached SAS Address\\s*:\\s*([\\w\\d]+)",
+              "model": "Model\\s*:\\s*([^\n]+)",
+              "drive_slot": "Device\\s*#(\\d+)",
+              "type": "adaptec"
+            },
+            "value": {
+              "temperature_drive": "Temperature\\s*:\\s*(\\d+)"
+            }
+          }
+        }
+      },
+      {
+        "name": "LSI",
+        "commands": [
+          "/opt/raidutils/MegaCli64 -LDInfo -Lall -aALL",
+          "/opt/raidutils/MegaCli64 -PDList -Aall"
+        ],
+        "metrics": {
+          "raid_controller_status": {
+            "help": "# HELP controller_temperature_c Controller temperature in Celsius\n",
+            "type": "# TYPE controller_temperature_c gauge\n",
+            "labels": {
+              "serial": "Controller Serial Number\\s*:\\s*(\\S+)",
+              "status": "Controller Status\\s*:\\s*(\\S+)",
+              "type": "adaptec"
+            },
+            "value": {
+              "regex": "Controller Status\\s*:\\s*(\\S+)",
+              "true": [ "Online", "Optimal", "OK" ],
+              "false": []
+            }
+          },
+          "raid_controller_temperature": {
+            "help": "# HELP controller_status Controller status (1 = OK, 0 = Not OK)\n",
+            "type": "# TYPE controller_status gauge\n",
+            "labels": {
+              "serial": "Controller Serial Number\\s*:\\s*(\\S+)",
+              "status": "Controller Status\\s*:\\s*(\\S+)",
+              "type": "adaptec"
+            },
+            "value": {
+              "regexs": "Current Temperature\\s*:\\s*(\\d+)"
+            }
+          },
+          "raid_disks_status": {
+            "help": "# HELP drive_status Drive status (1 = OK, 0 = Not OK)\n",
+            "type": "# TYPE drive_status gauge\n",
+            "labels": {
+              "serial": "Serial number\\s*:\\s*([\\w\\d]+)",
+              "drive_size": "Total Size\\s*:\\s*([\\d\\.]+\\s*\\w+)",
+              "wwid": "Attached SAS Address\\s*:\\s*([\\w\\d]+)",
+              "model": "Model\\s*:\\s*([^\n]+)",
+              "drive_slot": "Device\\s*#(\\d+)",
+              "type": "adaptec"
+            },
+            "value": {
+              "drive_status": "State\\s*:\\s*(\\w+)",
+              "true": [ "Online", "Optimal", "OK" ],
+              "false": []
+            }
+          },
+          "raid_disks_temperature": {
+            "help": "# HELP drive_temperature_c Drive temperature in Celsius\n",
+            "type": "# TYPE drive_temperature_c gauge\n",
+            "labels": {
+              "serial": "Serial number\\s*:\\s*([\\w\\d]+)",
+              "drive_size": "Total Size\\s*:\\s*([\\d\\.]+\\s*\\w+)",
+              "wwid": "Attached SAS Address\\s*:\\s*([\\w\\d]+)",
+              "model": "Model\\s*:\\s*([^\n]+)",
+              "drive_slot": "Device\\s*#(\\d+)",
+              "type": "adaptec"
+            },
+            "value": {
+              "temperature_drive": "Temperature\\s*:\\s*(\\d+)"
+            }
           }
         }
       }
-    }
-  }
+    ]
+  },
+
 }

@@ -1,4 +1,9 @@
-﻿#include "HttpServer.h"
+﻿#ifdef NDEBUG
+#include "HttpServer.h"
+#else
+#include "HttpServer.h"
+#include "parser.h"
+#endif
 
 int main(int argc, char* argv[]) {
     int opt;
@@ -19,9 +24,17 @@ int main(int argc, char* argv[]) {
                 exit(EXIT_FAILURE);
             }
         }
-
+#ifdef NDEBUG
         HttpServer server(ip, port);
         server.start();
+#else
+        HttpServer server(ip, port);
+        server.start();
+
+        //parser parser;
+
+        //parser.run();
+#endif
     }
     catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
